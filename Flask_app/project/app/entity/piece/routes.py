@@ -12,9 +12,13 @@ piece =Blueprint('piece',__name__)
 
 @piece.route('/piece/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in piec_e.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
-        request.json['pass']=bcrypt.generate_password_hash(request.json['pass']).decode('utf-8')
+        request.json['id']=str(id)
         todo = piec_e.document(id).get()
         if  todo.to_dict() is None :
             piec_e.document(id).set(request.json)

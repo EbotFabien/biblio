@@ -12,9 +12,13 @@ compteurs =Blueprint('compteurs',__name__)
 
 @compteurs.route('/compteurs/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
-    request.json['pass']=bcrypt.generate_password_hash(request.json['pass']).decode('utf-8')
+    try:
+        id=[doc.to_dict() for doc in compteur_s.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
         todo = compteur_s.document(id).get()
         if  todo.to_dict() is None :
             compteur_s.document(id).set(request.json)

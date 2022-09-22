@@ -12,8 +12,13 @@ typecom =Blueprint('typecom',__name__)
 
 @typecom.route('/typecom/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in typeco_m.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
         todo = typeco_m.document(id).get()
         if  todo.to_dict() is None :
             typelog_e.document(id).set(request.json)

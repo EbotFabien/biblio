@@ -13,7 +13,7 @@ from firebase_admin import credentials, firestore, initialize_app
 
 
 
-cred = credentials.Certificate('/Users/pro2015/Desktop/users/Flask_app/project/app/biblio.json')
+cred = credentials.Certificate('app/biblio.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 bcrypt = Bcrypt()

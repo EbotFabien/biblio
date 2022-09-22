@@ -12,8 +12,13 @@ extension =Blueprint('extension',__name__)
 
 @extension.route('/extension/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in ex_t.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
         todo = ex_t.document(id).get()
         if  todo.to_dict() is None :
             ex_t.document(id).set(request.json)

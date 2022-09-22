@@ -12,8 +12,13 @@ commentaire =Blueprint('commentaire',__name__)
 
 @commentaire.route('/commentaire/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in commentair_e.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
         todo = commentair_e.document(id).get()
         if  todo.to_dict() is None :
             commentair_e.document(id).set(request.json)

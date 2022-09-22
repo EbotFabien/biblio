@@ -12,8 +12,14 @@ logement =Blueprint('logement',__name__)
 
 @logement.route('/logement/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in logemen_t.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
+        #request.json['pass']=bcrypt.generate_password_hash(request.json['pass']).decode('utf-8')
         todo = logemen_t.document(id).get()
         if  todo.to_dict() is None :
             logemen_t.document(id).set(request.json)
