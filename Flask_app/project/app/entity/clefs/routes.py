@@ -12,28 +12,18 @@ clefs =Blueprint('clefs',__name__)
 
 @clefs.route('/Clefs/ajouter', methods=['POST'])
 def create():
-    try:
-        id=[doc.to_dict() for doc in clef_s.stream()][-1]['id']
-        id=str(int(id)+1)
-    except:
-        id='0'
-    if id:
-        request.json['id']=str(id)
-        todo = clef_s.document(id).get()
-        if  todo.to_dict() is None :
-            clef_s.document(id).set(request.json)
-            return jsonify({"success": True}), 200
-        else:
-            return jsonify({"Fail": "donnee exist deja"}), 400
-    else:
-        return 400
+    temp,parti=clef_s.add(request.json)
+    todo = clef_s.document(parti.id).get()
+    v=todo.to_dict()
+    v['id']=parti.id
+    return jsonify(v), 200
 
 @clefs.route('/Clefs/tous', methods=['GET'])
 def read():
-    all_todos = [doc.to_dict() for doc in clef_s.stream()]
+    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in clef_s.stream()]
     return jsonify(all_todos), 200
 
-@clefs.route('/Clefs/<int:ide>', methods=['GET'])
+@clefs.route('/Clefs/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     
@@ -44,7 +34,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 
-@clefs.route('/Clefs/update/<int:ide>', methods=['POST', 'PUT'])
+@clefs.route('/Clefs/update/<ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
         todo = clef_s.document(todo_id).get()
@@ -54,7 +44,7 @@ def update(ide):
             clef_s.document(todo_id).update(request.json)
             return jsonify({"success": True}), 200
 
-@clefs.route('/Clefs/delete/<int:ide>', methods=['GET', 'DELETE'])
+@clefs.route('/Clefs/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
     todo_id = str(ide)
     todo = clef_s.document(todo_id).get()
