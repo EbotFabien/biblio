@@ -12,28 +12,18 @@ commentaire =Blueprint('commentaire',__name__)
 
 @commentaire.route('/commentaire/ajouter', methods=['POST'])
 def create():
-    try:
-        id=[doc.to_dict() for doc in commentair_e.stream()][-1]['id']
-        id=str(int(id)+1)
-    except:
-        id='0'
-    if id:
-        request.json['id']=str(id)
-        todo = commentair_e.document(id).get()
-        if  todo.to_dict() is None :
-            commentair_e.document(id).set(request.json)
-            return jsonify({"success": True}), 200
-        else:
-            return jsonify({"Fail": "donnee exist deja"}), 400
-    else:
-        return 400
+    temp,parti=commentair_e.add(request.json)
+    todo = commentair_e.document(parti.id).get()
+    v=todo.to_dict()
+    v['id']=parti.id
+    return jsonify(v), 200
 
 @commentaire.route('/commentaire/tous', methods=['GET'])
 def read():
-    all_todos = [doc.to_dict() for doc in commentair_e.stream()]
+    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in commentair_e.stream()]
     return jsonify(all_todos), 200
 
-@commentaire.route('/commentaire/<int:ide>', methods=['GET'])
+@commentaire.route('/commentaire/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     
@@ -44,7 +34,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 
-@commentaire.route('/commentaire/update/<int:ide>', methods=['POST', 'PUT'])
+@commentaire.route('/commentaire/update/<ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
         todo = commentair_e.document(todo_id).get()
@@ -54,7 +44,7 @@ def update(ide):
             commentair_e.document(todo_id).update(request.json)
             return jsonify({"success": True}), 200
 
-@commentaire.route('/commentaire/delete/<int:ide>', methods=['GET', 'DELETE'])
+@commentaire.route('/commentaire/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
     todo_id = str(ide)
     todo = commentair_e.document(todo_id).get()
