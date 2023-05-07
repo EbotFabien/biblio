@@ -20,7 +20,13 @@ def create():
 
 @typecom.route('/typecom/tous', methods=['GET'])
 def read():
-    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in typeco_m.stream()]
+    #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in typeco_m.stream()]
+    all_todos=[]
+    for doc in typeco_m.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        v["id"]=doc.id
+        all_todos.append(v)
     return jsonify(all_todos), 200
 
 @typecom.route('/typecom/<ide>', methods=['GET'])
