@@ -20,7 +20,13 @@ def create():
 
 @compteurs.route('/compteurs/tous', methods=['GET'])
 def read():
-    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in compteur_s.stream()]
+    #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in compteur_s.stream()]
+    all_todos=[]
+    for doc in compteur_s.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        v["id"]=doc.id
+        all_todos.append(v)
     return jsonify(all_todos), 200
 
 @compteurs.route('/compteurs/<ide>', methods=['GET'])

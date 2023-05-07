@@ -20,7 +20,13 @@ def create():
 
 @rubric.route('/Rubric/tous', methods=['GET'])
 def read():
-    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in rubri_c.stream()]
+    #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in rubri_c.stream()]
+    all_todos=[]
+    for doc in rubri_c.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        v["id"]=doc.id
+        all_todos.append(v)
     return jsonify(all_todos), 200
 
 @rubric.route('/Rubric/<ide>', methods=['GET'])
