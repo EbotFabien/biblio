@@ -2,7 +2,7 @@ from flask import render_template, url_for,flash,redirect,request,abort,Blueprin
 from app import db,bcrypt
 
 
-voi_e = db.collection('Rubric')
+voi_e = db.collection('voie')
 
 
 
