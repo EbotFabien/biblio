@@ -51,7 +51,7 @@ def read_ind(Type,category=None):
             all_todos.append(v)
         return jsonify(all_todos), 200
     else:
-        todo = commentair_e.where('type', '==',Type)
+        todo = commentair_e.where('type', '==',Type).where('category', '==', category)
         all_todos=[]
         for doc in todo.stream():
             #if doc.to_dict()["utilisateur_id"] == "vide":
