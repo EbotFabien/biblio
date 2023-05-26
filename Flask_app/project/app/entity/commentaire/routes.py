@@ -39,7 +39,7 @@ def read_ind(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             return jsonify(todo.to_dict()), 200
-@commentaire.route('/commentaire/<Type>/<category>', methods=['GET'])
+@commentaire.route('/commentaire/search/<Type>/<category>', methods=['GET'])
 def search_ind(Type,category=None):
     if category == None:
         todo = commentair_e.where('type', '==',Type)
