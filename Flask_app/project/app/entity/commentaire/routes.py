@@ -40,7 +40,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 @commentaire.route('/commentaire/<Type>/<category>', methods=['GET'])
-def read_ind(Type,category=None):
+def search_ind(Type,category=None):
     if category == None:
         todo = commentair_e.where('type', '==',Type)
         all_todos=[]
