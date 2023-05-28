@@ -50,6 +50,15 @@ def search_ind(Type,category):
             v["id"]=doc.id
             all_todos.append(v)
         return jsonify(all_todos), 200
+    if Type == "None":
+        todo = commentair_e.where('nature', '==', category)
+        all_todos=[]
+        for doc in todo.stream():
+            #if doc.to_dict()["utilisateur_id"] == "vide":
+            v=doc.to_dict()
+            v["id"]=doc.id
+            all_todos.append(v)
+        return jsonify(all_todos), 200
     else:
         todo = commentair_e.where('type', '==',Type).where('nature', '==', category)
         all_todos=[]
