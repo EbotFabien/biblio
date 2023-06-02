@@ -39,17 +39,20 @@ def read_ind(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             return jsonify(todo.to_dict()), 200
-@commentaire.route('/commentaire/search/<Type>/<category>', methods=['GET'])
-def search_ind(Type,category):
+@commentaire.route('/commentaire/search/<Type>/<category>/<start>/<limit>/', methods=['GET'])
+def search_ind(Type,category,start,limit):
     if category == 'None':
         todo = commentair_e.where('type', '==',Type)
         all_todos=[]
-        for doc in todo.stream():
-            #if doc.to_dict()["utilisateur_id"] == "vide":
-            v=doc.to_dict()
-            v["id"]=doc.id
-            all_todos.append(v)
-        return jsonify(all_todos), 200
+        if start == "None":
+            for doc in todo.stream():
+                #if doc.to_dict()["utilisateur_id"] == "vide":
+                v=doc.to_dict()
+                v["id"]=doc.id
+                all_todos.append(v)
+            return jsonify(all_todos), 200
+        else:
+            if start !='0':
     if Type == "None":
         todo = commentair_e.where('nature', '==', category)
         all_todos=[]
