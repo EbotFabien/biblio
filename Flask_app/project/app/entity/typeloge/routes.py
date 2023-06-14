@@ -38,7 +38,9 @@ def read_ind(ide):
         if todo.to_dict() is None:
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
-            return jsonify(todo.to_dict()), 200
+            v=todo.to_dict()
+            v["id"]=doc.id
+            return jsonify(v), 200
 
 @typeloge.route('/typeloge/update/<ide>', methods=['POST', 'PUT'])
 def update(ide):
@@ -48,7 +50,10 @@ def update(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             typelog_e.document(todo_id).update(request.json)
-            return jsonify({"success": True}), 200
+            todo = typelog_e.document(ide).get()
+            final_= todo.to_dict()
+            final_["id"] = ide
+            return jsonify(final_), 200
 
 @typeloge.route('/typeloge/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
