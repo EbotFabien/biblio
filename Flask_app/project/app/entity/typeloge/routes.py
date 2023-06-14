@@ -50,7 +50,10 @@ def update(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             typelog_e.document(todo_id).update(request.json)
-            return jsonify({"success": True}), 200
+            todo = voi_e.document(ide).get()
+            final_= todo.to_dict()
+            final_["id"] = ide
+            return jsonify(final_), 200
 
 @typeloge.route('/typeloge/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
