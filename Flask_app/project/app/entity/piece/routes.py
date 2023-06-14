@@ -48,7 +48,10 @@ def update(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             piec_e.document(todo_id).update(request.json)
-            return jsonify({"success": True}), 200
+            todo = piec_e.document(ide).get()
+            final_= todo.to_dict()
+            final_["id"] = ide
+            return jsonify(final_), 200
 
 @piece.route('/piece/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
