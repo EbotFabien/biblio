@@ -50,7 +50,7 @@ def update(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             typelog_e.document(todo_id).update(request.json)
-            todo = voi_e.document(ide).get()
+            todo = typelog_e.document(ide).get()
             final_= todo.to_dict()
             final_["id"] = ide
             return jsonify(final_), 200
