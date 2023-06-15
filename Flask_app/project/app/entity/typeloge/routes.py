@@ -39,7 +39,7 @@ def read_ind(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             v=todo.to_dict()
-            v["id"]=doc.id
+            v["id"]=ide
             return jsonify(v), 200
 
 @typeloge.route('/typeloge/update/<ide>', methods=['POST', 'PUT'])
