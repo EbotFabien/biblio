@@ -10,7 +10,7 @@ commentair_e= db.collection('commentaire')
 
 commentaire =Blueprint('commentaire',__name__)
 
-@commentaire.route('/commentaires/ajouter', methods=['POST'])
+@commentaire.route('/amsv2com/ajouter', methods=['POST'])
 def create():
     temp,parti=commentair_e.add(request.json)
     todo = commentair_e.document(parti.id).get()
@@ -18,7 +18,7 @@ def create():
     v['id']=parti.id
     return jsonify(v), 200
 
-@commentaire.route('/commentaires/tous', methods=['GET'])
+@commentaire.route('/amsv2com/tous', methods=['GET'])
 def read():
     #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in commentair_e.stream()]
     all_todos=[]
@@ -29,7 +29,7 @@ def read():
         all_todos.append(v)
     return jsonify(all_todos), 200
 
-@commentaire.route('/commentaires/<ide>', methods=['GET'])
+@commentaire.route('/amsv2com/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     
@@ -39,7 +39,7 @@ def read_ind(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             return jsonify(todo.to_dict()), 200
-@commentaire.route('/commentaires/search/<Type>/<category>/', methods=['GET'])
+@commentaire.route('/amsv2com/search/<Type>/<category>/', methods=['GET'])
 def search_ind(Type,category):
     if category == 'None':
         todo = commentair_e.where('type', '==',Type)
@@ -69,7 +69,7 @@ def search_ind(Type,category):
             v["id"]=doc.id
             all_todos.append(v)
         return jsonify(all_todos), 200
-@commentaire.route('/commentaires/update/<ide>', methods=['POST', 'PUT'])
+@commentaire.route('/amsv2com/update/<ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
         todo = commentair_e.document(todo_id).get()
@@ -83,7 +83,7 @@ def update(ide):
             return jsonify(final_), 200
             
 
-@commentaire.route('/commentaires/delete/<ide>', methods=['GET', 'DELETE'])
+@commentaire.route('/amsv2com/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
     todo_id = str(ide)
     todo = commentair_e.document(todo_id).get()
